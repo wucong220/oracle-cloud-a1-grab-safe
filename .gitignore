@@ -1,0 +1,28 @@
+# ============================================================
+#  运行期产生的文件 / 含个人凭据的文件，一律不要提交
+# ============================================================
+
+# --- 个人配置与凭据（最重要）---
+config.sh
+pushplus_token
+notify_url
+*.pem
+*.key
+.oci/
+.env
+
+# --- 运行期产物 ---
+grab.log
+nohup.log
+SUCCESS
+RESULT.txt
+instance.json
+notify_result.json
+*.log
+
+# --- 编辑器 / 系统 ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

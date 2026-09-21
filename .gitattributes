@@ -1,0 +1,8 @@
+# 强制所有文本文件用 LF 换行
+# （脚本从 Windows 传到 Linux 后如果带 CRLF，会报
+#   `/usr/bin/env: 'bash\r': No such file or directory` 这类诡异错误）
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
