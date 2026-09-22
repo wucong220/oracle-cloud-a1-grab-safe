@@ -44,8 +44,8 @@ fi
 : "${MODEL:=VM.Standard.A1.Flex}"
 : "${OCPUS:=1}"
 : "${MEMGB:=6}"
-: "${INTERVAL:=45}"      # 每轮间隔基准（秒）
-: "${JITTER:=25}"        # 随机抖动上限（秒），避免固定节奏
+: "${INTERVAL:=600}"     # 每轮间隔基准（秒）。默认 10 分钟，见 README「调频与风控」
+: "${JITTER:=60}"        # 随机抖动上限（秒），避免固定节奏
 : "${NAME:=a1-free}"     # 实例显示名
 : "${IMAGE:=auto}"       # auto = 自动挑该区域最新的 ARM 镜像
 : "${IMAGE_OS:=Oracle Linux}"
@@ -189,11 +189,13 @@ log "===== 抢机启动：$MODEL ${OCPUS}OCPU/${MEMGB}GB，间隔 ${INTERVAL}s(+
 
 round=0
 last_msg=""
+extra=0
 
 while :; do
   [ -f "$FLAG" ] && { log "检测到成功标记，退出循环。"; exit 0; }
   round=$((round + 1))
   summary=""
+  extra=0
 
   for AD in "${ADS[@]}"; do
     [ -f "$FLAG" ] && exit 0
@@ -255,6 +257,17 @@ while :; do
     if [ "$msg" = "Out of host capacity." ]; then
       # 正常情况：容量没放出来，压缩成一个短标记
       summary="$summary ${AD##*:}=无容量"
+    elif printf '%s' "$msg" | grep -q "TooManyRequests"; then
+      # 被限流：本轮结束后多等一会儿再打，别硬顶着继续
+      summary="$summary ${AD##*:}=限流"
+      extra=300
+      log "⚠️ 触发限流 TooManyRequests，本轮结束后额外等待 $((extra / 60)) 分钟"
+    elif printf '%s' "$msg" | grep -q "LimitExceeded"; then
+      # 服务上限：再重试也不会成功，停下来通知人来看
+      log "⚠️ 已达服务上限 LimitExceeded：$msg"
+      log "   继续轮询不会有结果，已自动停止。请检查免费额度是否已用满。"
+      notify "⚠️ OCI 抢机已停止" "遇到 LimitExceeded（服务上限），轮询已自动停止。<br>原因：$msg"
+      exit 1
     else
       # 非预期错误，完整记一次，方便排查
       summary="$summary ${AD##*:}=异常"
@@ -267,5 +280,5 @@ while :; do
 
   log "第 $round 轮 →$summary"
 
-  sleep $((INTERVAL + RANDOM % (JITTER + 1)))
+  sleep $((INTERVAL + RANDOM % (JITTER + 1) + extra))
 done
