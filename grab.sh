@@ -25,6 +25,13 @@ else
   exit 1
 fi
 
+# ---- 单次 API 调用的固定参数与硬超时 ----
+# --no-retry  ：CLI 默认对 500 做指数退避重试，一次 "Out of host capacity"
+#               会被拖到 100+ 秒；关掉后只要 ~3 秒。
+# --read-timeout：oci-cli 默认读超时 60s，这里收紧到 45s，把「一轮」的最坏
+#               耗时钉在 可用域个数 × 45s 以内，避免个别请求慢把整轮拖长。
+OCI_FLAGS=(--no-retry --connection-timeout 10 --read-timeout 45)
+
 LOG="$BASE/grab.log"
 FLAG="$BASE/SUCCESS"
 RESULT="$BASE/instance.json"
@@ -86,7 +93,7 @@ fi
 
 # 可用域
 if [ -z "$ADS" ] || [ "$ADS" = "auto" ]; then
-  AD_LIST="$($OCI --no-retry iam availability-domain list \
+  AD_LIST="$($OCI "${OCI_FLAGS[@]}" iam availability-domain list \
               --compartment-id "$COMPARTMENT" \
               --query 'data[].name' --raw-output 2>/dev/null \
               | awk -F'"' '/"/{print $2}')"
@@ -100,10 +107,10 @@ fi
 
 # 子网：config.sh 里没写就自动挑（只有一个才敢自动挑）
 if [ -z "${SUBNET:-}" ]; then
-  SUBNET_COUNT="$($OCI --no-retry network subnet list --compartment-id "$COMPARTMENT" \
+  SUBNET_COUNT="$($OCI "${OCI_FLAGS[@]}" network subnet list --compartment-id "$COMPARTMENT" \
                     --query 'length(data)' --raw-output 2>/dev/null)"
   if [ "$SUBNET_COUNT" = "1" ]; then
-    SUBNET="$($OCI --no-retry network subnet list --compartment-id "$COMPARTMENT" \
+    SUBNET="$($OCI "${OCI_FLAGS[@]}" network subnet list --compartment-id "$COMPARTMENT" \
                 --query 'data[0].id' --raw-output 2>/dev/null)"
     log "自动选用唯一子网：$SUBNET"
   else
@@ -115,7 +122,7 @@ fi
 
 # 镜像：自动挑最新的 ARM 镜像
 if [ -z "$IMAGE" ] || [ "$IMAGE" = "auto" ]; then
-  IMAGE="$($OCI --no-retry compute image list \
+  IMAGE="$($OCI "${OCI_FLAGS[@]}" compute image list \
             --compartment-id "$COMPARTMENT" \
             --operating-system "$IMAGE_OS" \
             --shape "$MODEL" \
@@ -156,7 +163,7 @@ if [ "${DRY_RUN:-0}" = "1" ]; then
   echo "轮询间隔       : ${INTERVAL}s + 0~${JITTER}s"
   echo
   echo "--- 试跑一次创建请求（预期会因无容量失败）---"
-  _dry=$($OCI --no-retry compute instance launch \
+  _dry=$($OCI "${OCI_FLAGS[@]}" compute instance launch \
     --compartment-id "$COMPARTMENT" \
     --availability-domain "${ADS[0]}" \
     --shape "$MODEL" \
@@ -194,6 +201,7 @@ extra=0
 while :; do
   [ -f "$FLAG" ] && { log "检测到成功标记，退出循环。"; exit 0; }
   round=$((round + 1))
+  t_round=$(date +%s)
   summary=""
   extra=0
 
@@ -202,7 +210,7 @@ while :; do
 
     # --no-retry 是关键：CLI 默认对 500 错误做指数退避重试，
     # 一次 "Out of host capacity" 会被拖到 100+ 秒；关掉后只要 ~4 秒。
-    out=$($OCI --no-retry compute instance launch \
+    out=$($OCI "${OCI_FLAGS[@]}" compute instance launch \
       --compartment-id "$COMPARTMENT" \
       --availability-domain "$AD" \
       --shape "$MODEL" \
@@ -219,12 +227,12 @@ while :; do
       # ================== 成功 ==================
       IID="$out"
       log "★★★ 抢到了！AD=$AD  实例ID=$IID"
-      $OCI --no-retry compute instance get --instance-id "$IID" >"$RESULT" 2>/dev/null
+      $OCI "${OCI_FLAGS[@]}" compute instance get --instance-id "$IID" >"$RESULT" 2>/dev/null
 
       # 等网卡就绪，取公网 IP
       MIP="(等待中)"
       for _ in $(seq 1 40); do
-        MIP=$($OCI --no-retry compute instance list-vnics --instance-id "$IID" \
+        MIP=$($OCI "${OCI_FLAGS[@]}" compute instance list-vnics --instance-id "$IID" \
               --query 'data[0]."public-ip"' --raw-output 2>/dev/null)
         case "$MIP" in
           ""|"null"|"None") sleep 6 ;;
