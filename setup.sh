@@ -193,6 +193,31 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# 4.5 关掉会拖垮小机器的系统定时任务（2026-09-24 新增，重要）
+# ---------------------------------------------------------------------------
+# 实测教训：Oracle Linux 默认开着的 dnf-makecache.timer 每约 2 小时跑一次，
+# 在 498MB 的小机器上要吃 ~360MB 内存，会把整机打到 OOM、卡死十几分钟才恢复。
+# 实测记录：95 次 OOM 全是它，光白等就吃掉 11.5% 的轮询时间（最长一次 71 分钟）。
+# 这台机器只需要网络和 oci-cli，这些定时任务纯属拖累。
+# 副作用仅「以后跑 dnf install 会慢一点」，完全可逆。
+say "关掉对小机器无益的系统定时任务"
+if command -v systemctl >/dev/null 2>&1; then
+  for U in dnf-makecache.timer \
+           pmlogger_check.timer pmlogger_farm_check.timer \
+           pmie_check.timer pmie_farm_check.timer \
+           pmlogger_daily.timer pmie_daily.timer; do
+    if systemctl is-enabled "$U" >/dev/null 2>&1; then
+      if sudo systemctl disable --now "$U" >/dev/null 2>&1; then
+        ok "已关闭 $U"
+      else
+        warn "关闭 $U 失败（可忽略）"
+      fi
+    fi
+  done
+  echo "    （想恢复：sudo systemctl enable --now dnf-makecache.timer）"
+fi
+
+# ---------------------------------------------------------------------------
 # 5. 安装 systemd 服务
 # ---------------------------------------------------------------------------
 say "安装 systemd 服务"

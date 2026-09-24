@@ -561,6 +561,58 @@ sudo systemctl disable --now a1grab.service   # 停掉，别让它再抢
 </details>
 
 <details>
+<summary><b>运行几天后，发现轮询间隔有时变成几十分钟，是什么原因？</b></summary>
+
+**先怀疑本机的系统定时任务，别急着怪 Oracle。**（2026-09-24 实测踩坑）
+
+Oracle Linux 默认开着 `dnf-makecache.timer`，每约 2 小时跑一次，会吃掉约 **360MB** 内存。
+在 498MB 的 E2.1.Micro 上这足以把整机打到 OOM —— 实测 **95 次 OOM 全部是它**，
+每次卡死十几分钟才被内核杀掉。**光白等就吃掉了 11.5% 的运行时间**（55.9 小时里白等 6.4 小时，
+最长一次 71 分钟没发请求）。
+
+自己复查：
+
+```bash
+sudo systemctl disable --now dnf-makecache.timer
+sudo dmesg -T | grep "Out of memory: Killed process" | tail      # 看历史
+grep -c "Out of memory" <(sudo dmesg -T)                         # 记住这个数当基线
+```
+
+`setup.sh` 从 2026-09-24 起会**自动关闭**这个定时器（以及 PCP 的 `pmlogger_*` / `pmie_*`
+这些每 30 分钟跑一次、对抢机毫无用处的监控任务）。副作用仅「以后跑 `dnf install` 会慢一点」。
+
+还有两个连带症状，认识了就不会误判：
+
+- **`Nice=19` + `IOSchedulingClass=idle` 会让情况更糟。** 内存抖动时脚本的日志写入
+  被压到最低 I/O 优先级，会被饿住，间隔进一步虚增。本项目的 `a1grab.service` 已改为
+  `Nice=10` + `best-effort`（**如果你是从旧版本安装的，请更新这个文件**）。
+- **日志里可能出现 `Date ... is not within allowed clock skew`。** 这不是时钟配置问题
+  （`chronyc tracking` 平时精确到微秒），而是机器刚卡过、时钟落后了，OCI 于是拒签请求。
+  它和长间隔是同一个根因的两个症状。
+</details>
+
+<details>
+<summary><b>我一条通知都没收到，是通知渠道坏了吗？</b></summary>
+
+大概率不是。**脚本只在两种情况发通知**：① 抢到了实例；② 遇到 `LimitExceeded`
+（额度用满或配置有误）需要人工介入。
+
+所以**长期没有通知 = 还没抢到**，属于正常状态。
+
+想确认渠道是否可用，直接手工发一条：
+
+```bash
+~/a1grab/notify.sh "测试" "这是一条测试消息"
+```
+
+期望输出 `PushPlus 推送成功`。
+
+注意 PushPlus 的**默认渠道是微信**，不是邮件。想收邮件需要在
+[pushplus.plus](https://www.pushplus.plus) 账号里先**绑定并验证邮箱**，
+否则接口会返回 `{"code":600,"data":"接收用户邮箱为空"}`。
+</details>
+
+<details>
 <summary><b>报 <code>Config Errors | fingerprint | malformed</code></b></summary>
 
 指纹格式不对。必须是**冒号分隔**的 16 组两位十六进制：

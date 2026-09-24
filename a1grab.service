@@ -22,11 +22,17 @@ RestartSec=120
 # 小机器（如 E2.1.Micro 只有 ~500MB 内存）必须限流，
 # 否则 Python 版 oci-cli 可能触发系统级 OOM。
 # 脚本本身只需约 100MB，300M 上限足够宽松。
-Nice=19
-IOSchedulingClass=idle
 MemoryHigh=220M
 MemoryMax=300M
 CPUQuota=40%
+
+# ⚠️ 不要写 Nice=19 + IOSchedulingClass=idle（2026-09-24 修正）
+# 这两个值看着"礼貌"，实际会让本脚本在内存抖动时被 I/O 饿住：
+# 日志写入（log ... >> file）会被压到最低优先级，导致相邻两轮的
+# 时间戳差出 20~100 分钟，白白损失轮询时间（实测吃掉 11.5% 运行时间）。
+# 这台机器专职抢机，没有理由把自己排在最后。
+Nice=10
+IOSchedulingClass=best-effort
 
 [Install]
 WantedBy=multi-user.target
