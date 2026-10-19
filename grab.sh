@@ -202,6 +202,12 @@ while :; do
   [ -f "$FLAG" ] && { log "检测到成功标记，退出循环。"; exit 0; }
   round=$((round + 1))
   t_round=$(date +%s)
+
+  # 日志瘦身：启动时那次检查在"长期不重启"的场景下永远不会再执行
+  # （实测已连续运行 24 天），所以每 500 轮补检一次，保住原设计意图。
+  if [ $((round % 500)) -eq 0 ] && [ "$(wc -l <"$LOG")" -gt 8000 ]; then
+    tail -n 2000 "$LOG" >"$LOG.tmp" && mv "$LOG.tmp" "$LOG"
+  fi
   summary=""
   extra=0
 
@@ -265,11 +271,15 @@ while :; do
     if [ "$msg" = "Out of host capacity." ]; then
       # 正常情况：容量没放出来，压缩成一个短标记
       summary="$summary ${AD##*:}=无容量"
-    elif printf '%s' "$msg" | grep -q "TooManyRequests"; then
-      # 被限流：本轮结束后多等一会儿再打，别硬顶着继续
+    elif printf '%s' "$msg" | grep -qiE "TooManyRequests|Too many requests"; then
+      # 被限流：本轮结束后多等一会儿再打，别硬顶着继续。
+      # 注意 OCI 有两种措辞，必须都认：
+      #   "TooManyRequests"              —— 错误码形式（429）
+      #   "Too many requests for the user" —— 用户级限流，带空格、仅首字母大写
+      # 2026-10-09 实测：只匹配前者会漏判后者，被当成普通异常、退避不生效。
       summary="$summary ${AD##*:}=限流"
       extra=300
-      log "⚠️ 触发限流 TooManyRequests，本轮结束后额外等待 $((extra / 60)) 分钟"
+      log "⚠️ 触发限流（$msg），本轮结束后额外等待 $((extra / 60)) 分钟"
     elif printf '%s' "$msg" | grep -q "LimitExceeded"; then
       # 服务上限：再重试也不会成功，停下来通知人来看
       log "⚠️ 已达服务上限 LimitExceeded：$msg"

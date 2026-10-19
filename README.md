@@ -551,10 +551,16 @@ sudo systemctl disable --now a1grab.service   # 停掉，别让它再抢
 { "code": "InternalError", "message": "Out of host capacity." }
 ```
 
-需要警惕的是这两种：
+需要警惕的是这几种：
 
 - `TooManyRequests` —— 被限速，说明频率太高
+- `Too many requests for the user` —— **同一个意思的另一种措辞**（用户级限流，
+  带空格、仅首字母大写）。⚠️ 用 `grep "TooManyRequests"` 是**抓不到**这一条的，
+  脚本里必须用 `grep -qiE "TooManyRequests|Too many requests"` 才算认全
 - 收到 Oracle 的邮件，提到账号审查 / abuse —— 立刻停掉脚本，检查邮箱
+
+命中的话，脚本会在本轮结束后**自动多等 5 分钟**再继续（日志记 `=限流`）。
+如果在日志里看到 `=异常` 且原文是上面两条之一，说明你的版本判定写窄了，去更新 `grab.sh`。
 
 本项目默认 10 分钟间隔就是为了避开这个区间。如果账号还有别的用途，
 **不要**为了抢机把频率拉到分钟级以下。
