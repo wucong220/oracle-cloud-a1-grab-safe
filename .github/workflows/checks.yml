@@ -1,0 +1,52 @@
+name: checks
+
+# Offline verification only: ShellCheck + the Mock-OCI test suite.
+# No OCI credentials, no network OCI calls, no cloud writes.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Show tool versions
+        run: |
+          python --version
+          bash --version | head -n1
+          shellcheck --version | head -n2
+
+      - name: Run offline checks (ShellCheck + Mock-OCI tests)
+        run: |
+          python tools/run_checks.py \
+            --shellcheck "$(command -v shellcheck)" \
+            --bash "$(command -v bash)" \
+            --report "$RUNNER_TEMP/test-results.json"
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ runner.temp }}/test-results.json
+          if-no-files-found: warn
