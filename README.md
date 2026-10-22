@@ -1,5 +1,13 @@
 # Oracle Cloud A1 本地安全加固分支
 
+> **来源与许可声明**
+>
+> 本仓库是 [FBX-Dev/oracle-cloud-a1-grab](https://github.com/FBX-Dev/oracle-cloud-a1-grab) 的**安全加固分支（非原创项目）**，在原 MIT 许可下二次开发。原始版权归 `Copyright (c) 2026 FBX-Dev` 所有，完整许可见 [LICENSE](LICENSE)。本分支在其固定基线之上重写了抓取脚本、配置解析、通知、状态机与部署门禁，任何问题请反馈到本仓库，不要打扰原作者。
+>
+> **依赖未随本仓库提供**：`.audit-tools/`（约 241 MB 的离线 wheelhouse、ShellCheck 二进制、审计工具）出于仓库体积与供应链安全考虑**未纳入版本控制**（见 [.gitignore](.gitignore)）。要复现测试/安装，请按 [部署教程](docs/DEPLOYMENT.md) 第 2 节，依据 [依赖清单](audit/dependency-manifest.json) 中的 SHA256 自行下载并校验，禁止来源不明或不校验哈希的替代。
+>
+> **本仓库不含任何凭据**：没有 OCI 私钥、API 密钥、Tenancy OCID、SSH 私钥或真实账户配置。`config.example.sh` 仅为占位模板；真实配置应放在云同步目录之外的私有路径。
+
 审计基线：`b6bc5cb20e0d8f5e51e4a4c1691c5573ef3c9e61`。
 项目 [FBX-Dev/oracle-cloud-a1-grab](https://github.com/FBX-Dev/oracle-cloud-a1-grab)，2026-10-22 查询为 **1 Star**。
 

@@ -1,0 +1,38 @@
+NOTICE
+======
+
+This repository ("oracle-cloud-a1-grab-safe") is a security-hardened fork of:
+
+    oracle-cloud-a1-grab
+    https://github.com/FBX-Dev/oracle-cloud-a1-grab
+    Copyright (c) 2026 FBX-Dev
+
+The upstream project is licensed under the MIT License. A copy of that license
+is retained verbatim in the LICENSE file of this repository.
+
+Baseline commit of the upstream source tree used for this fork:
+    b6bc5cb20e0d8f5e51e4a4c1691c5573ef3c9e61
+
+What this fork changed (summary; see audit/SECURITY-AUDIT.md and
+audit/hardening.patch for the complete diff):
+
+  - Replaced shell-based provisioning with a fail-closed, Python
+    standard-library-only single-intent launcher (a1grab.py).
+  - Removed the upstream DRY_RUN launch defect, unbounded retries, and the
+    absence of an idempotency journal / opc-retry-token.
+  - Reworked configuration parsing to treat config as inert data (no
+    source/eval), added a hard-coded Tokyo / A1 / 2 OCPU / 12 GB / 50 GB target.
+  - Removed the generic notification path and third-party webhook/token reads.
+  - Replaced the system service template with a read-only user unit.
+  - Added full-tenant verification, billing/usage gating, local locking,
+    persistent state, and an offline Mock-OCI test suite.
+
+Binary dependencies under .audit-tools/ are intentionally NOT included in this
+repository. See README (source/license notice) and docs/DEPLOYMENT.md
+(section 2) for how to obtain and verify them via audit/dependency-manifest.json.
+
+No OCI credentials, API keys, private keys, tenancy identifiers, or real
+account configuration are included in this repository.
+
+This fork is maintained independently. Please report issues to this repository,
+not to the upstream author.
