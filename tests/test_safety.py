@@ -1,6 +1,7 @@
 import ast
 import base64
 import copy
+import datetime as dt
 import hashlib
 import importlib.util
 import json
@@ -55,6 +56,31 @@ class Safety(unittest.TestCase):
     def run_engine(self, create=True, resume=False):
         self.flush()
         return self.engine.run(create, resume)
+
+    def run_with_preflight_seconds(self, elapsed, create=True, resume=False):
+        """Simulate a preflight that takes `elapsed` wall seconds.
+
+        The first clock() read is run() entry; after that the engine clock advances so
+        that the launch-time re-check sees entry_time + elapsed. Lets us exercise the
+        PREFLIGHT_MAX_SECONDS boundary and the launch-instant approval/month re-check.
+        """
+        reads = {"n": 0}
+        base = self.now
+        def clock():
+            n = reads["n"]
+            reads["n"] += 1
+            # First read (entry) = base; every later read = base + elapsed.
+            return base if n == 0 else base + elapsed
+        engine = a.Engine(self.cfg, self.api, self.path, clock)
+        self.flush()
+        return engine.run(create, resume)
+
+    def stopped_with_preflight(self, reason, elapsed):
+        self.flush()
+        with self.assertRaises(a.Stop) as caught:
+            self.run_with_preflight_seconds(elapsed)
+        self.assertIn(reason, str(caught.exception))
+        return str(caught.exception)
 
     def stopped(self, reason=None, **kwargs):
         with self.assertRaises(a.Stop) as caught:
@@ -299,9 +325,32 @@ class Safety(unittest.TestCase):
         self.fixture["regions"][0]["region-name"] = "us-phoenix-1"
         self.stopped("HOME_REGION_OR_REGION_SCOPE")
 
-    def test_multiple_regions_require_manual_scope_review(self):
-        self.fixture["regions"].append({"region-name": "us-phoenix-1"})
+    def test_multiple_regions_allowed_when_tokyo_is_home(self):
+        # An account may subscribe to several regions; extra READY regions must not block.
+        self.fixture["regions"].append({"region-name": "us-phoenix-1", "is-home-region": False, "status": "READY"})
+        self.assertEqual(self.run_engine()["state"], "ACCEPTED")
+
+    def test_home_region_must_be_tokyo_even_with_multiple_regions(self):
+        # Multi-region is fine, but the single Home Region must still be Tokyo.
+        self.fixture["regions"] = [
+            {"region-name": "ap-tokyo-1", "is-home-region": False, "status": "READY"},
+            {"region-name": "us-phoenix-1", "is-home-region": True, "status": "READY"},
+        ]
         self.stopped("HOME_REGION_OR_REGION_SCOPE")
+
+    def test_region_with_non_ready_or_unknown_status_blocks(self):
+        # OCI RegionSubscription.status documents only READY / IN_PROGRESS. Fail closed:
+        # accept only READY; IN_PROGRESS, the non-official INACTIVE, and any unknown
+        # enum value must all stop.
+        for status in ("IN_PROGRESS", "INACTIVE", "UNKNOWN_ENUM_VALUE", None):
+            with self.subTest(status=status):
+                self.fixture["regions"] = [{"region-name": "ap-tokyo-1", "is-home-region": True, "status": status}]
+                self.stopped("REGION_SUBSCRIPTION_STATE_UNKNOWN")
+
+    def test_extra_region_with_non_ready_status_blocks(self):
+        # A non-READY secondary subscription must still stop even though Tokyo is READY.
+        self.fixture["regions"].append({"region-name": "eu-frankfurt-1", "is-home-region": False, "status": "IN_PROGRESS"})
+        self.stopped("REGION_SUBSCRIPTION_STATE_UNKNOWN")
 
     def test_wrong_or_multiple_ad_blocks(self):
         self.fixture["ads"] = [{"name": "TEST:AP-TOKYO-1-AD-2"}]
@@ -370,6 +419,30 @@ class Safety(unittest.TestCase):
             with self.subTest(fields=list(changes)):
                 approve(a, self.cfg, **changes)
                 self.stopped()
+
+    def test_preflight_within_window_launches(self):
+        # 299s preflight is within PREFLIGHT_MAX_SECONDS (300): approval still valid.
+        self.assertEqual(self.run_with_preflight_seconds(299)["state"], "ACCEPTED")
+
+    def test_preflight_beyond_window_stops(self):
+        # 301s preflight exceeds PREFLIGHT_MAX_SECONDS (300): fail closed before launch.
+        self.stopped_with_preflight("PREFLIGHT_TOO_OLD", 301)
+        self.assertEqual(self.remote()["launch_calls"], 0)
+
+    def test_approval_expired_during_preflight_stops(self):
+        # Approval valid at entry but expired by launch time must stop at launch recheck.
+        approve(a, self.cfg, expires_at=a.iso(NOW + 200))
+        self.stopped_with_preflight("HUMAN_REVIEW_STALE", 299)
+
+    def test_preflight_crossing_month_rechecks_usage_and_approval(self):
+        # Entry on 2026-10-31 23:58 UTC; a 299s preflight reaches 2026-11-01, so the
+        # launch-instant re-check must re-read usage for the new month; the October
+        # approval no longer matches the billing month and the launch stops.
+        base = dt.datetime(2026, 10, 31, 23, 58, tzinfo=dt.timezone.utc).timestamp()
+        self.now = base
+        approve(a, self.cfg, now=base)
+        self.stopped_with_preflight("PRICING_OR_ACCOUNT_REVIEW_REQUIRED", 299)
+        self.assertEqual(self.remote()["launch_calls"], 0)
 
     def test_billing_usage_pages_are_all_consumed(self):
         self.fixture["usage_pages"] = [[], [{"sku-part-number": "B93297", "unit": "OCPU HOURS", "computed-quantity": 1499}]]

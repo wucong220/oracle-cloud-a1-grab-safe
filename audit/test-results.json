@@ -1,12 +1,12 @@
 {
-  "started_at_utc": "2026-10-22T13:18:10.952357+00:00",
-  "finished_at_utc": "2026-10-22T13:21:07.118707+00:00",
+  "started_at_utc": "2026-10-22T18:46:00.060196+00:00",
+  "finished_at_utc": "2026-10-22T18:48:34.293967+00:00",
   "python": "3.12.10",
   "platform": "win32",
   "oci_transport": "OFFLINE_EXECUTABLE_MOCK_ONLY",
   "real_oci_launches": 0,
-  "tests_run": 88,
-  "subtests_run": 97,
+  "tests_run": 95,
+  "subtests_run": 101,
   "failures": 0,
   "errors": 0,
   "skipped": 0,
@@ -90,6 +90,10 @@
     },
     {
       "test": "test_safety.Safety.test_any_read_failure_fails_closed",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_approval_expired_during_preflight_stops",
       "result": "PASS"
     },
     {
@@ -189,6 +193,10 @@
       "result": "PASS"
     },
     {
+      "test": "test_safety.Safety.test_extra_region_with_non_ready_status_blocks",
+      "result": "PASS"
+    },
+    {
       "test": "test_safety.Safety.test_failed_durable_intent_write_prevents_launch",
       "result": "PASS"
     },
@@ -202,6 +210,10 @@
     },
     {
       "test": "test_safety.Safety.test_high_performance_volumes_block",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_home_region_must_be_tokyo_even_with_multiple_regions",
       "result": "PASS"
     },
     {
@@ -229,7 +241,7 @@
       "result": "PASS"
     },
     {
-      "test": "test_safety.Safety.test_multiple_regions_require_manual_scope_review",
+      "test": "test_safety.Safety.test_multiple_regions_allowed_when_tokyo_is_home",
       "result": "PASS"
     },
     {
@@ -250,6 +262,18 @@
     },
     {
       "test": "test_safety.Safety.test_pending_other_shape_blocks_unknown_boot_storage",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_preflight_beyond_window_stops",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_preflight_crossing_month_rechecks_usage_and_approval",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_preflight_within_window_launches",
       "result": "PASS"
     },
     {
@@ -282,6 +306,10 @@
     },
     {
       "test": "test_safety.Safety.test_real_multiprocess_lock_allows_only_one_launch",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_region_with_non_ready_or_unknown_status_blocks",
       "result": "PASS"
     },
     {
@@ -398,7 +426,7 @@
     }
   ],
   "tested_source_sha256": {
-    "a1grab.py": "3ea74c83a3b99e0ff2823265f52e841599ae57488b9d55f2b21e5eac0826330e",
+    "a1grab.py": "9479d5aed2692ccaaf68f1f72db0f7126249832340a824ed466569893a6c29b6",
     "a1grab.service": "fbb3f90fbbaf7395b5ac9a5a4843f1355109ddeed8cfc8616bd3779e9b8db63d",
     "config.example.sh": "bd88f2cc8f8a4f693670c605c4d3a2b80c676053b38fb15bb5bf910421a01043",
     "grab.sh": "a866ec2310065cf7da24bc505a37ced9df3c328b7d6659580cfcde2caf5587a1",
@@ -406,12 +434,12 @@
     "schemas/review.example.json": "237137bf5394ca024a0b35dd6656c32d60c0ce11cee592801ae44094c89511aa",
     "setup.sh": "89f69461afd46244ec88e088170c904ae47ec2721b22d1e118a7b9008acd14e6",
     "status.sh": "9212ce279bf0b58a90d3393b37d59871c51c8885ff471af08fa32c53d051c1fc",
-    "tests/fixtures.py": "5423b7c4c6225f13178b1afb522450838d8792a441adcd0aa5481f8168dae9f7",
+    "tests/fixtures.py": "d3a1181c7e521a15fb77589344072c5a5d82960187714d868d2dad4e6f5defe2",
     "tests/mock_oci.py": "5690a4efe2643c47232d3935d48842c6cdefe3551aec81cdaf5ad34e2182a2a4",
     "tests/test_cli_contract.py": "94a9fa7d83746ec95a983dd9d27068920fe3f7ec986306e6e527ab625d211c13",
     "tests/test_dependency_patch.py": "73a1bbfec82ad194d32e9693f156d52c12951bae9229b51c22846554a250367a",
     "tests/test_regression.py": "96c85ba3113f4cef586917ba9e86ecdb02e4fc04e3e89c4c23b60864ee7fac4d",
-    "tests/test_safety.py": "da1941f0c0b98c044678777879fd07d9b4e9b65fc6579c8df4b34d0458966c1f",
+    "tests/test_safety.py": "a9d68542bdca2be85e2bce6f49d85464f2fe41f4f2923b8d449378f5fb9803a3",
     "tests/worker.py": "ff124b8460659cc646cd7264e9aa65333efe729190fa76db108994f0309ab136",
     "tools/check_dependencies.py": "356da0d254ce35e87b6aabd1a304cecc68bd0f3fa32d3c9573b4266292f34346",
     "tools/patch_cli_dependency.py": "eb3f6c03d73b735040cd456b8ae77f3e77f443ccae6bdf4c2602a811cd810b37",
