@@ -1,11 +1,11 @@
 {
-  "started_at_utc": "2026-10-22T18:46:00.060196+00:00",
-  "finished_at_utc": "2026-10-22T18:48:34.293967+00:00",
+  "started_at_utc": "2026-10-22T19:23:59.645388+00:00",
+  "finished_at_utc": "2026-10-22T19:26:50.974474+00:00",
   "python": "3.12.10",
   "platform": "win32",
   "oci_transport": "OFFLINE_EXECUTABLE_MOCK_ONLY",
   "real_oci_launches": 0,
-  "tests_run": 95,
+  "tests_run": 97,
   "subtests_run": 101,
   "failures": 0,
   "errors": 0,
@@ -169,7 +169,15 @@
       "result": "PASS"
     },
     {
+      "test": "test_safety.Safety.test_empty_list_stdout_is_treated_as_empty_not_invalid_json",
+      "result": "PASS"
+    },
+    {
       "test": "test_safety.Safety.test_empty_or_ambiguous_subscription_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_empty_stdout_does_not_mask_real_parse_errors",
       "result": "PASS"
     },
     {
@@ -426,7 +434,7 @@
     }
   ],
   "tested_source_sha256": {
-    "a1grab.py": "9479d5aed2692ccaaf68f1f72db0f7126249832340a824ed466569893a6c29b6",
+    "a1grab.py": "a764788bc91c8e45f081d29f9357faa870de8d596e7ce78dca76e8bcf1abb4e6",
     "a1grab.service": "fbb3f90fbbaf7395b5ac9a5a4843f1355109ddeed8cfc8616bd3779e9b8db63d",
     "config.example.sh": "bd88f2cc8f8a4f693670c605c4d3a2b80c676053b38fb15bb5bf910421a01043",
     "grab.sh": "a866ec2310065cf7da24bc505a37ced9df3c328b7d6659580cfcde2caf5587a1",
@@ -435,11 +443,11 @@
     "setup.sh": "89f69461afd46244ec88e088170c904ae47ec2721b22d1e118a7b9008acd14e6",
     "status.sh": "9212ce279bf0b58a90d3393b37d59871c51c8885ff471af08fa32c53d051c1fc",
     "tests/fixtures.py": "d3a1181c7e521a15fb77589344072c5a5d82960187714d868d2dad4e6f5defe2",
-    "tests/mock_oci.py": "5690a4efe2643c47232d3935d48842c6cdefe3551aec81cdaf5ad34e2182a2a4",
+    "tests/mock_oci.py": "0bb2fa848e80f55d0ee32818f8f5d1288bbd650effb699b5c629487b62591829",
     "tests/test_cli_contract.py": "94a9fa7d83746ec95a983dd9d27068920fe3f7ec986306e6e527ab625d211c13",
     "tests/test_dependency_patch.py": "73a1bbfec82ad194d32e9693f156d52c12951bae9229b51c22846554a250367a",
     "tests/test_regression.py": "96c85ba3113f4cef586917ba9e86ecdb02e4fc04e3e89c4c23b60864ee7fac4d",
-    "tests/test_safety.py": "a9d68542bdca2be85e2bce6f49d85464f2fe41f4f2923b8d449378f5fb9803a3",
+    "tests/test_safety.py": "9092cd1085252197b006d8bd0fd5e71728915754b2d307f4073250dde8a65cac",
     "tests/worker.py": "ff124b8460659cc646cd7264e9aa65333efe729190fa76db108994f0309ab136",
     "tools/check_dependencies.py": "356da0d254ce35e87b6aabd1a304cecc68bd0f3fa32d3c9573b4266292f34346",
     "tools/patch_cli_dependency.py": "eb3f6c03d73b735040cd456b8ae77f3e77f443ccae6bdf4c2602a811cd810b37",

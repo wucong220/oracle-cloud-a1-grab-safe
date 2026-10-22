@@ -306,8 +306,14 @@ class OCI:
         require(name in READS, "API_NOT_ALLOWLISTED")
         result = self._process([*self.flags, *READS[name], *args])
         require(result.returncode == 0, "OCI_READ_FAILED_" + name.upper())
+        stdout = (result.stdout or "").strip()
+        # The OCI CLI may emit a completely empty stdout for an empty list result
+        # (e.g. `iam compartment list` when a tenancy has only the root compartment).
+        # Treat empty output as an empty list rather than an unparseable response.
+        if stdout == "":
+            return []
         try:
-            output = json.loads(result.stdout)
+            output = json.loads(stdout)
         except (ValueError, TypeError):
             raise Stop("OCI_READ_INVALID_JSON") from None
         require(isinstance(output, dict) and "data" in output, "OCI_READ_MISSING_DATA")

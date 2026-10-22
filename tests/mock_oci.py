@@ -93,6 +93,10 @@ def main():
         print("secret-sentinel-must-never-be-logged", file=sys.stderr)
         return 1
     data = fixture.get(action)
+    # Some OCI CLI list commands emit completely empty stdout for an empty result
+    # (e.g. `iam compartment list` for a tenancy with only the root compartment).
+    if fixture.get("empty_stdout") == action:
+        return 0
     if action == "instances":
         data = list(data)
         if not fixture.get("hide_accepted"):

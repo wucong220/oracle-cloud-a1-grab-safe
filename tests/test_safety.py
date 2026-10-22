@@ -272,6 +272,19 @@ class Safety(unittest.TestCase):
                 self.stopped("READ_FAILED")
         self.assertEqual(self.remote()["launch_calls"], 0)
 
+    def test_empty_list_stdout_is_treated_as_empty_not_invalid_json(self):
+        # OCI CLI can emit completely empty stdout for an empty list result (e.g.
+        # `iam compartment list` for a tenancy with only the root compartment). That
+        # must be parsed as an empty list, not fail with OCI_READ_INVALID_JSON.
+        self.fixture["empty_stdout"] = "compartments"
+        self.assertEqual(self.run_engine(create=False)["state"], "DRY_RUN")
+
+    def test_empty_stdout_does_not_mask_real_parse_errors(self):
+        # A non-empty but non-JSON body must still fail closed.
+        api = a.OCI(self.cfg, self.path, runner=lambda *args, **kwargs: __import__("subprocess").CompletedProcess(args, 0, "not json", ""))
+        with self.assertRaisesRegex(a.Stop, "OCI_READ_INVALID_JSON"):
+            api.read("compartments")
+
     def test_unknown_resource_lifecycle_blocks(self):
         self.fixture["instances"] = [instance("UNKNOWN_ENUM_VALUE")]
         self.stopped("UNKNOWN_RESOURCE_LIFECYCLE")
