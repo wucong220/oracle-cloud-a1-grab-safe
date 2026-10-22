@@ -33,7 +33,15 @@ def cfg(directory):
     key.write_text("ssh-ed25519 " + base64.b64encode(raw).decode() + " synthetic-test", encoding="utf-8")
     auth = directory / "mock-auth-config"
     auth.write_text(f"[DEFAULT]\ntenancy={TENANT}\nregion=ap-tokyo-1\n", encoding="utf-8")
-    return {"TENANCY": TENANT, "COMPARTMENT": TENANT, "SUBNET": SUBNET, "IMAGE": IMAGE, "SSH_PUBKEY_FILE": str(key), "OCI_BIN": sys.executable, "OCI_CONFIG_FILE": str(auth), "OCI_PROFILE": "DEFAULT", "OCI_CLI_VERSION": "3.95.1", "OCI_CLI_SHA256": hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(), "REVIEW_FILE": str(directory / "test-review.json"), "REGION": "ap-tokyo-1", "AD": "AD-1", "MODEL": "VM.Standard.A1.Flex", "OCPUS": "2", "MEMGB": "12", "BOOT_GB": "50", "BOOT_VPUS_PER_GB": "10", "NAME": "a1-free-tokyo", "DRY_RUN": "0", "ALLOW_CREATE": "1"}
+    # OCI.verify() requires OCI_BIN to be a regular file that is NOT a symlink. On many
+    # Linux distributions sys.executable is a symlink (e.g. /usr/bin/python -> python3.12),
+    # which would fail closed there. Copy the interpreter bytes into a plain regular file
+    # inside the temp directory so the fixture is platform-independent and non-symlink.
+    oci_bin = directory / "mock-oci-binary"
+    oci_bin.write_bytes(Path(sys.executable).read_bytes())
+    if os.name != "nt":
+        oci_bin.chmod(0o700)
+    return {"TENANCY": TENANT, "COMPARTMENT": TENANT, "SUBNET": SUBNET, "IMAGE": IMAGE, "SSH_PUBKEY_FILE": str(key), "OCI_BIN": str(oci_bin), "OCI_CONFIG_FILE": str(auth), "OCI_PROFILE": "DEFAULT", "OCI_CLI_VERSION": "3.95.1", "OCI_CLI_SHA256": hashlib.sha256(oci_bin.read_bytes()).hexdigest(), "REVIEW_FILE": str(directory / "test-review.json"), "REGION": "ap-tokyo-1", "AD": "AD-1", "MODEL": "VM.Standard.A1.Flex", "OCPUS": "2", "MEMGB": "12", "BOOT_GB": "50", "BOOT_VPUS_PER_GB": "10", "NAME": "a1-free-tokyo", "DRY_RUN": "0", "ALLOW_CREATE": "1"}
 
 
 def instance(state="RUNNING", operation=None, identifier=INSTANCE):
