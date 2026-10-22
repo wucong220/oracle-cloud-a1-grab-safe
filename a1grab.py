@@ -392,10 +392,12 @@ def inventory(api, cfg):
     require(regions, "INVALID_REGIONS")
     # An account may subscribe to several regions; only the Home Region matters for
     # the free-tier A1 target. Require Tokyo to be present, READY and the single Home
-    # Region; do NOT reject merely because other regions are also subscribed. Any
-    # subscription reporting an unexpected lifecycle state is still treated as unknown.
+    # Region; do NOT reject merely because other regions are also subscribed.
+    # OCI RegionSubscription.status is an enum whose documented values are READY and
+    # IN_PROGRESS (see oci.identity.models.RegionSubscription). Fail closed: only a
+    # READY subscription is accepted; IN_PROGRESS or any unknown enum value stops.
     for row in regions:
-        require(row.get("status") in ("READY", "INACTIVE"), "REGION_SUBSCRIPTION_STATE_UNKNOWN")
+        require(row.get("status") == "READY", "REGION_SUBSCRIPTION_STATE_UNKNOWN")
     tokyo = [row for row in regions if row.get("region-name") == REGION]
     home = [row for row in regions if row.get("is-home-region") is True]
     require(len(tokyo) == 1 and tokyo[0].get("status") == "READY" and len(home) == 1 and home[0].get("region-name") == REGION, "HOME_REGION_OR_REGION_SCOPE_NOT_CONFIRMED")
@@ -562,8 +564,18 @@ class Engine:
             if not create:
                 return {"state": "DRY_RUN", "cloud_write": False, "request_sha256": body_hash, "tenancy_sha256": hashlib.sha256(self.cfg["TENANCY"].encode()).hexdigest(), "existing_a1": len(snapshot["instances"]), "existing_storage_gb": snapshot["volumes_gb"], "existing_backups": snapshot["backups"], "billing_month": bill["month"], "reported_a1_ocpu_hours": bill["ocpu_hours_reported"], "reported_a1_memory_gb_hours": bill["memory_gb_hours_reported"], "manual_billing_upper_bound_and_approval_required": True}
             require(self.cfg["DRY_RUN"] == "0" and self.cfg["ALLOW_CREATE"] == "1" and os.environ.get("DRY_RUN", "0") == "0", "CREATION_NOT_EXPLICITLY_ENABLED")
-            check_review(self.cfg, body, bill, now)
-            require(0 <= self.clock() - now <= PREFLIGHT_MAX_SECONDS, "PREFLIGHT_TOO_OLD_REPEAT_READS")
+            # Re-validate approval freshness and billing month at the moment of launch,
+            # not only at run() entry. A long preflight could otherwise launch with an
+            # approval that has since expired, or with usage read for the previous UTC
+            # month. PREFLIGHT_MAX_SECONDS bounds how stale the preflight reads may be.
+            launch_now = self.clock()
+            require(0 <= launch_now - now <= PREFLIGHT_MAX_SECONDS, "PREFLIGHT_TOO_OLD_REPEAT_READS")
+            launch_bill = bill
+            if dt.datetime.fromtimestamp(launch_now, UTC).strftime("%Y-%m") != bill["month"]:
+                # Crossed a UTC month boundary during preflight: re-read usage and re-check
+                # the approval against the new month at the launch instant.
+                launch_bill = billing(self.api, self.cfg, launch_now)
+            check_review(self.cfg, body, launch_bill, launch_now)
             if state:
                 age = self.clock() - state["created_at"]
                 require(0 <= age < TOKEN_SAFE_SECONDS, "RETRY_TOKEN_EXPIRED_OR_CLOCK_REVERSED_STOP")
