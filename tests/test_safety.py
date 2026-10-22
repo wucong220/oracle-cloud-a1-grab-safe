@@ -299,9 +299,22 @@ class Safety(unittest.TestCase):
         self.fixture["regions"][0]["region-name"] = "us-phoenix-1"
         self.stopped("HOME_REGION_OR_REGION_SCOPE")
 
-    def test_multiple_regions_require_manual_scope_review(self):
-        self.fixture["regions"].append({"region-name": "us-phoenix-1"})
+    def test_multiple_regions_allowed_when_tokyo_is_home(self):
+        # An account may subscribe to several regions; extra READY regions must not block.
+        self.fixture["regions"].append({"region-name": "us-phoenix-1", "is-home-region": False, "status": "READY"})
+        self.assertEqual(self.run_engine()["state"], "ACCEPTED")
+
+    def test_home_region_must_be_tokyo_even_with_multiple_regions(self):
+        # Multi-region is fine, but the single Home Region must still be Tokyo.
+        self.fixture["regions"] = [
+            {"region-name": "ap-tokyo-1", "is-home-region": False, "status": "READY"},
+            {"region-name": "us-phoenix-1", "is-home-region": True, "status": "READY"},
+        ]
         self.stopped("HOME_REGION_OR_REGION_SCOPE")
+
+    def test_region_with_unknown_status_blocks(self):
+        self.fixture["regions"].append({"region-name": "eu-frankfurt-1", "is-home-region": False, "status": "UNKNOWN_ENUM_VALUE"})
+        self.stopped("REGION_SUBSCRIPTION_STATE_UNKNOWN")
 
     def test_wrong_or_multiple_ad_blocks(self):
         self.fixture["ads"] = [{"name": "TEST:AP-TOKYO-1-AD-2"}]

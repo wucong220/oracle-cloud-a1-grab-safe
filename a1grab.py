@@ -31,6 +31,10 @@ CLI_VERSION = "3.95.1"
 POLICY_DATE = "2026-10-22"
 POLICY_URL = "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm"
 TOKEN_SAFE_SECONDS = 23 * 3600
+# Max age of a preflight snapshot before it may be used for a real launch. Multi-region
+# / multi-compartment accounts may need many list calls; 60s proved too tight under slow
+# networks. 300s still bounds staleness while allowing realistic preflight duration.
+PREFLIGHT_MAX_SECONDS = 300
 JOURNAL_STATES = {"PREPARED", "IN_FLIGHT", "UNKNOWN", "ACCEPTED", "SUCCEEDED", "CAPACITY", "THROTTLED", "REJECTED", "BLOCKED"}
 CONFIG_KEYS = set("TENANCY COMPARTMENT SUBNET IMAGE SSH_PUBKEY_FILE OCI_BIN OCI_CONFIG_FILE OCI_PROFILE OCI_CLI_VERSION OCI_CLI_SHA256 REVIEW_FILE REGION AD MODEL OCPUS MEMGB BOOT_GB BOOT_VPUS_PER_GB NAME DRY_RUN ALLOW_CREATE".split())
 READS = {
@@ -385,7 +389,16 @@ def inventory(api, cfg):
     """All compartments incl. root, all list pages, no RUNNING-only filter."""
     root = cfg["TENANCY"]
     regions = array(api.read("regions", "--tenancy-id", root, "--all"), "INVALID_REGIONS")
-    require(len(regions) == 1 and regions[0].get("region-name") == REGION and regions[0].get("is-home-region") is True and regions[0].get("status") == "READY", "HOME_REGION_OR_REGION_SCOPE_NOT_CONFIRMED")
+    require(regions, "INVALID_REGIONS")
+    # An account may subscribe to several regions; only the Home Region matters for
+    # the free-tier A1 target. Require Tokyo to be present, READY and the single Home
+    # Region; do NOT reject merely because other regions are also subscribed. Any
+    # subscription reporting an unexpected lifecycle state is still treated as unknown.
+    for row in regions:
+        require(row.get("status") in ("READY", "INACTIVE"), "REGION_SUBSCRIPTION_STATE_UNKNOWN")
+    tokyo = [row for row in regions if row.get("region-name") == REGION]
+    home = [row for row in regions if row.get("is-home-region") is True]
+    require(len(tokyo) == 1 and tokyo[0].get("status") == "READY" and len(home) == 1 and home[0].get("region-name") == REGION, "HOME_REGION_OR_REGION_SCOPE_NOT_CONFIRMED")
     tenancy = api.read("tenancy", "--tenancy-id", root)
     require(isinstance(tenancy, dict) and tenancy.get("id") == root and tenancy.get("home-region-key") == "NRT", "TENANCY_HOME_REGION_NOT_CONFIRMED")
     ads = array(api.read("ads", "--compartment-id", root, "--all"), "INVALID_ADS")
@@ -550,7 +563,7 @@ class Engine:
                 return {"state": "DRY_RUN", "cloud_write": False, "request_sha256": body_hash, "tenancy_sha256": hashlib.sha256(self.cfg["TENANCY"].encode()).hexdigest(), "existing_a1": len(snapshot["instances"]), "existing_storage_gb": snapshot["volumes_gb"], "existing_backups": snapshot["backups"], "billing_month": bill["month"], "reported_a1_ocpu_hours": bill["ocpu_hours_reported"], "reported_a1_memory_gb_hours": bill["memory_gb_hours_reported"], "manual_billing_upper_bound_and_approval_required": True}
             require(self.cfg["DRY_RUN"] == "0" and self.cfg["ALLOW_CREATE"] == "1" and os.environ.get("DRY_RUN", "0") == "0", "CREATION_NOT_EXPLICITLY_ENABLED")
             check_review(self.cfg, body, bill, now)
-            require(0 <= self.clock() - now <= 60, "PREFLIGHT_TOO_OLD_REPEAT_READS")
+            require(0 <= self.clock() - now <= PREFLIGHT_MAX_SECONDS, "PREFLIGHT_TOO_OLD_REPEAT_READS")
             if state:
                 age = self.clock() - state["created_at"]
                 require(0 <= age < TOKEN_SAFE_SECONDS, "RETRY_TOKEN_EXPIRED_OR_CLOCK_REVERSED_STOP")
