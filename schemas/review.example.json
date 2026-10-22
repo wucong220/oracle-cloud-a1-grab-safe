@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "approved": false,
+  "tenancy_sha256": "COPY_FROM_READ_ONLY_PREFLIGHT",
+  "request_sha256": "COPY_FROM_READ_ONLY_PREFLIGHT",
+  "reviewed_at": null,
+  "expires_at": null,
+  "policy_date": "2026-10-22",
+  "policy_url": "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+  "account_plan": null,
+  "billing_month": null,
+  "all_compartments_visible": false,
+  "exclusive_writer": false,
+  "no_unresolved_requests": false,
+  "official_image_free": false,
+  "balanced_boot_free": false,
+  "unreported_usage_accounted_for": false,
+  "local_state_preserved": false,
+  "a1_ocpu_hours_upper_bound": null,
+  "a1_memory_gb_hours_upper_bound": null
+}

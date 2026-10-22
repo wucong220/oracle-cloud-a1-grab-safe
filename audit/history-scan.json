@@ -1,0 +1,16 @@
+{
+  "commits": [
+    "b6bc5cb20e0d8f5e51e4a4c1691c5573ef3c9e61",
+    "e9e40c6afcdc7201cc6e8ed4119ef8be5301b1ad",
+    "9c33b9c965d865c4a784cf640d4b49f05feabb2c",
+    "b66081fdd0f6ea3bb26338f40cb4c523aadf2178",
+    "7894f6767117ad1b84ad135ddac137c9d43ca2f6"
+  ],
+  "file_versions_scanned": 50,
+  "rules": [
+    "private-key-material",
+    "credential-assignment"
+  ],
+  "findings": [],
+  "note": "Pattern scan supplements full manual review of the fixed source tree; absence is not proof of no secret."
+}

@@ -26,3 +26,16 @@ notify_result.json
 .DS_Store
 Thumbs.db
 *.swp
+
+# Private runtime state/approvals belong outside the cloud-synced checkout.
+.audit-tools/
+__pycache__/
+*.pyc
+.coverage
+config.local.*
+review.json
+*.approval.json
+journal.json
+request-body.json
+request-headers.json
+test-results.local.*

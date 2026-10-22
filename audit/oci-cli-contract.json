@@ -1,0 +1,463 @@
+{
+  "cli_version": "3.95.1",
+  "sdk_version": "2.189.0",
+  "cli_wheel_sha256": "026d31775377ce99acfb8ecae29095bcfc1fc3031baa4e705042e7cd1fa2fbb7",
+  "sdk_wheel_sha256": "134e7cc634d4963ffc0c5411e9c2b2d8695d2f154fd5f8b873dd9fa8a4cb36a6",
+  "commands": {
+    "regions": {
+      "file": "services/identity/src/oci_cli_identity/generated/identity_cli.py",
+      "function": "list_region_subscriptions",
+      "options": [
+        "--tenancy-id",
+        "--all"
+      ],
+      "output": [
+        {
+          "module": "identity",
+          "class": "list[RegionSubscription]"
+        }
+      ]
+    },
+    "tenancy": {
+      "file": "services/identity/src/oci_cli_identity/generated/identity_cli.py",
+      "function": "get_tenancy",
+      "options": [
+        "--tenancy-id"
+      ],
+      "output": [
+        {
+          "module": "identity",
+          "class": "Tenancy"
+        }
+      ]
+    },
+    "ads": {
+      "file": "services/identity/src/oci_cli_identity/generated/identity_cli.py",
+      "function": "list_availability_domains",
+      "options": [
+        "--compartment-id",
+        "--all"
+      ],
+      "output": [
+        {
+          "module": "identity",
+          "class": "list[AvailabilityDomain]"
+        }
+      ]
+    },
+    "compartments": {
+      "file": "services/identity/src/oci_cli_identity/generated/identity_cli.py",
+      "function": "list_compartments",
+      "options": [
+        "--compartment-id",
+        "--page",
+        "--limit",
+        "--access-level",
+        "--compartment-id-in-subtree",
+        "--name",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "identity",
+          "class": "list[Compartment]"
+        }
+      ]
+    },
+    "instances": {
+      "file": "services/core/src/oci_cli_compute/generated/compute_cli.py",
+      "function": "list_instances",
+      "options": [
+        "--compartment-id",
+        "--availability-domain",
+        "--capacity-reservation-id",
+        "--compute-cluster-id",
+        "--display-name",
+        "--limit",
+        "--page",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[Instance]"
+        }
+      ]
+    },
+    "instance": {
+      "file": "services/core/src/oci_cli_compute/generated/compute_cli.py",
+      "function": "get_instance",
+      "options": [
+        "--instance-id"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "Instance"
+        }
+      ]
+    },
+    "images": {
+      "file": "services/core/src/oci_cli_compute/generated/compute_cli.py",
+      "function": "list_images",
+      "options": [
+        "--compartment-id",
+        "--display-name",
+        "--operating-system",
+        "--operating-system-version",
+        "--shape",
+        "--limit",
+        "--page",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[Image]"
+        }
+      ]
+    },
+    "subnet": {
+      "file": "services/core/src/oci_cli_virtual_network/generated/virtualnetwork_cli.py",
+      "function": "get_subnet",
+      "options": [
+        "--subnet-id"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "Subnet"
+        }
+      ]
+    },
+    "boot": {
+      "file": "services/core/src/oci_cli_blockstorage/generated/blockstorage_cli.py",
+      "function": "list_boot_volumes",
+      "options": [
+        "--availability-domain",
+        "--compartment-id",
+        "--limit",
+        "--page",
+        "--volume-group-id",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[BootVolume]"
+        }
+      ]
+    },
+    "block": {
+      "file": "services/core/src/oci_cli_blockstorage/generated/blockstorage_cli.py",
+      "function": "list_volumes",
+      "options": [
+        "--availability-domain",
+        "--compartment-id",
+        "--limit",
+        "--page",
+        "--display-name",
+        "--sort-by",
+        "--sort-order",
+        "--volume-group-id",
+        "--cluster-placement-group-id",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[Volume]"
+        }
+      ]
+    },
+    "boot_backups": {
+      "file": "services/core/src/oci_cli_blockstorage/generated/blockstorage_cli.py",
+      "function": "list_boot_volume_backups",
+      "options": [
+        "--compartment-id",
+        "--boot-volume-id",
+        "--limit",
+        "--page",
+        "--display-name",
+        "--source-boot-volume-backup-id",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[BootVolumeBackup]"
+        }
+      ]
+    },
+    "block_backups": {
+      "file": "services/core/src/oci_cli_blockstorage/generated/blockstorage_cli.py",
+      "function": "list_volume_backups",
+      "options": [
+        "--compartment-id",
+        "--volume-id",
+        "--limit",
+        "--page",
+        "--display-name",
+        "--source-volume-backup-id",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[VolumeBackup]"
+        }
+      ]
+    },
+    "containers": {
+      "file": "services/container_instances/src/oci_cli_container_instance/generated/containerinstance_cli.py",
+      "function": "list_container_instances",
+      "options": [
+        "--compartment-id",
+        "--lifecycle-state",
+        "--display-name",
+        "--availability-domain",
+        "--limit",
+        "--page",
+        "--sort-order",
+        "--sort-by",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "container_instances",
+          "class": "ContainerInstanceCollection"
+        }
+      ]
+    },
+    "pools": {
+      "file": "services/core/src/oci_cli_compute_management/generated/computemanagement_cli.py",
+      "function": "list_instance_pools",
+      "options": [
+        "--compartment-id",
+        "--display-name",
+        "--limit",
+        "--page",
+        "--sort-by",
+        "--sort-order",
+        "--lifecycle-state",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[InstancePoolSummary]"
+        }
+      ]
+    },
+    "reservations": {
+      "file": "services/core/src/oci_cli_compute/generated/compute_cli.py",
+      "function": "list_compute_capacity_reservations",
+      "options": [
+        "--compartment-id",
+        "--availability-domain",
+        "--lifecycle-state",
+        "--display-name",
+        "--limit",
+        "--page",
+        "--sort-by",
+        "--sort-order",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "core",
+          "class": "list[ComputeCapacityReservationSummary]"
+        }
+      ]
+    },
+    "availability": {
+      "file": "services/limits/src/oci_cli_limits/generated/limits_cli.py",
+      "function": "get_resource_availability",
+      "options": [
+        "--service-name",
+        "--limit-name",
+        "--compartment-id",
+        "--availability-domain",
+        "--subscription-id",
+        "--external-location"
+      ],
+      "output": [
+        {
+          "module": "limits",
+          "class": "ResourceAvailability"
+        }
+      ]
+    },
+    "subscriptions": {
+      "file": "services/osp_gateway/src/oci_cli_subscription_service/generated/subscriptionservice_cli.py",
+      "function": "list_subscriptions",
+      "options": [
+        "--osp-home-region",
+        "--compartment-id",
+        "--page",
+        "--limit",
+        "--sort-by",
+        "--sort-order",
+        "--all",
+        "--page-size"
+      ],
+      "output": [
+        {
+          "module": "osp_gateway",
+          "class": "SubscriptionCollection"
+        }
+      ]
+    },
+    "usage": {
+      "file": "services/usage_api/src/oci_cli_usageapi/generated/usageapi_cli.py",
+      "function": "request_summarized_usages",
+      "options": [
+        "--tenant-id",
+        "--time-usage-started",
+        "--time-usage-ended",
+        "--granularity",
+        "--is-aggregate-by-time",
+        "--forecast",
+        "--query-type",
+        "--group-by",
+        "--group-by-tag",
+        "--compartment-depth",
+        "--filter",
+        "--page",
+        "--limit"
+      ],
+      "output": [
+        {
+          "module": "usage_api",
+          "class": "UsageAggregation"
+        }
+      ]
+    }
+  },
+  "models": {
+    "launch_instance_details": {
+      "availability_domain": "availabilityDomain",
+      "capacity_reservation_id": "capacityReservationId",
+      "compartment_id": "compartmentId",
+      "create_vnic_details": "createVnicDetails",
+      "dedicated_vm_host_id": "dedicatedVmHostId",
+      "defined_tags": "definedTags",
+      "security_attributes": "securityAttributes",
+      "display_name": "displayName",
+      "extended_metadata": "extendedMetadata",
+      "fault_domain": "faultDomain",
+      "cluster_placement_group_id": "clusterPlacementGroupId",
+      "freeform_tags": "freeformTags",
+      "compute_cluster_id": "computeClusterId",
+      "hostname_label": "hostnameLabel",
+      "image_id": "imageId",
+      "ipxe_script": "ipxeScript",
+      "launch_options": "launchOptions",
+      "instance_options": "instanceOptions",
+      "availability_config": "availabilityConfig",
+      "preemptible_instance_config": "preemptibleInstanceConfig",
+      "metadata": "metadata",
+      "agent_config": "agentConfig",
+      "shape": "shape",
+      "shape_config": "shapeConfig",
+      "source_details": "sourceDetails",
+      "subnet_id": "subnetId",
+      "launch_volume_attachments": "launchVolumeAttachments",
+      "is_pv_encryption_in_transit_enabled": "isPvEncryptionInTransitEnabled",
+      "platform_config": "platformConfig",
+      "placement_constraint_details": "placementConstraintDetails",
+      "is_ai_enterprise_enabled": "isAIEnterpriseEnabled",
+      "instance_configuration_id": "instanceConfigurationId",
+      "licensing_configs": "licensingConfigs"
+    },
+    "create_vnic_details": {
+      "assign_ipv6_ip": "assignIpv6Ip",
+      "assign_public_ip": "assignPublicIp",
+      "assign_private_dns_record": "assignPrivateDnsRecord",
+      "defined_tags": "definedTags",
+      "display_name": "displayName",
+      "freeform_tags": "freeformTags",
+      "security_attributes": "securityAttributes",
+      "hostname_label": "hostnameLabel",
+      "ipv6_address_ipv6_subnet_cidr_pair_details": "ipv6AddressIpv6SubnetCidrPairDetails",
+      "subnet_cidr": "subnetCidr",
+      "nsg_ids": "nsgIds",
+      "private_ip": "privateIp",
+      "private_ip_id": "privateIpId",
+      "skip_source_dest_check": "skipSourceDestCheck",
+      "subnet_id": "subnetId",
+      "vlan_id": "vlanId"
+    },
+    "instance_source_via_image_details": {
+      "source_type": "sourceType",
+      "boot_volume_size_in_gbs": "bootVolumeSizeInGBs",
+      "image_id": "imageId",
+      "kms_key_id": "kmsKeyId",
+      "boot_volume_vpus_per_gb": "bootVolumeVpusPerGB",
+      "instance_source_image_filter_details": "instanceSourceImageFilterDetails"
+    },
+    "subscription_summary": {
+      "id": "id",
+      "subscription_plan_number": "subscriptionPlanNumber",
+      "plan_type": "planType",
+      "time_start": "timeStart",
+      "ship_to_cust_acct_site_id": "shipToCustAcctSiteId",
+      "ship_to_cust_acct_role_id": "shipToCustAcctRoleId",
+      "bill_to_cust_account_id": "billToCustAccountId",
+      "is_intent_to_pay": "isIntentToPay",
+      "is_corporate_conversion_allowed": "isCorporateConversionAllowed",
+      "currency_code": "currencyCode",
+      "gsi_org_code": "gsiOrgCode",
+      "language_code": "languageCode",
+      "organization_id": "organizationId",
+      "upgrade_state": "upgradeState",
+      "upgrade_state_details": "upgradeStateDetails",
+      "account_type": "accountType",
+      "tax_info": "taxInfo",
+      "payment_options": "paymentOptions",
+      "payment_gateway": "paymentGateway",
+      "billing_address": "billingAddress",
+      "time_plan_upgrade": "timePlanUpgrade",
+      "time_personal_to_corporate_conv": "timePersonalToCorporateConv"
+    },
+    "subscription_collection": {
+      "items": "items"
+    },
+    "resource_availability": {
+      "used": "used",
+      "available": "available",
+      "fractional_usage": "fractionalUsage",
+      "fractional_availability": "fractionalAvailability",
+      "effective_quota_value": "effectiveQuotaValue"
+    }
+  },
+  "file_parameter": "file:// followed by native literal path; prefix stripped without URI decoding",
+  "raw_request_no_retry": "--no-retry selects oci.retry.NoneRetryStrategy",
+  "raw_request_status": "HTTP status is in JSON status; even non-2xx HTTP can exit 0"
+}

@@ -1,0 +1,60 @@
+{
+  "repository": "https://github.com/FBX-Dev/oracle-cloud-a1-grab",
+  "audit_commit": "b6bc5cb20e0d8f5e51e4a4c1691c5573ef3c9e61",
+  "tree": "29f578990f8e84d320e88a54db234bd0d523c233",
+  "stars_at_lookup": 1,
+  "stars_lookup_date": "2026-10-22 Asia/Shanghai",
+  "stars_source": "GitHub repository page, native in-app browser and public web retrieval; anonymous API was rate-limited",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 240,
+      "sha256": "360b86b564bf47bb0071d570f5b6395f0c0a918486ffe6c1b83c9a8434450dd0"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 484,
+      "sha256": "3d454ba60c8ac83494af22a92b9e952c7159cf340adae2ba2c26174c18731ec7"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1064,
+      "sha256": "200371d6daedb29b1da9e790ef3b0a77bee9844f0045ec9a5f5a30695ae8b8e3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 31018,
+      "sha256": "85fdd5c59e611f4ba9cb11d26a334a57743db5faa299eac43b947d800689e0ed"
+    },
+    {
+      "path": "a1grab.service",
+      "bytes": 1358,
+      "sha256": "d31d940fbe34272ad333f521a1822442eec3f35141108f91aad940e3117d45e5"
+    },
+    {
+      "path": "config.example.sh",
+      "bytes": 2852,
+      "sha256": "7f4010b62b73d51873b0e7ead7539254283874af60f586f7ae5429ed3be1d1c3"
+    },
+    {
+      "path": "grab.sh",
+      "bytes": 12346,
+      "sha256": "1f0c1db8c8862cc5c8f76aa164ecdaa2e688d0dbe1793edc7fed550c8c0e8dd5"
+    },
+    {
+      "path": "notify.sh",
+      "bytes": 2068,
+      "sha256": "70897594eaadf21ac422a6936ffff08f9d3dfca0523e3b55beca640870ac74ed"
+    },
+    {
+      "path": "setup.sh",
+      "bytes": 11155,
+      "sha256": "1ddafaaf5b8381d325edfcd620211cfcc3398ed1e98626ed634daa06753ddb41"
+    },
+    {
+      "path": "status.sh",
+      "bytes": 1615,
+      "sha256": "59d580ca4e021f67807c1f4fce4d7b273ff6dff8f72576d8467384fea61a210f"
+    }
+  ]
+}

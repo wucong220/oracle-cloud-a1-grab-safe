@@ -1,0 +1,421 @@
+{
+  "started_at_utc": "2026-10-22T11:18:02.556556+00:00",
+  "finished_at_utc": "2026-10-22T11:21:11.490275+00:00",
+  "python": "3.12.14",
+  "platform": "win32",
+  "oci_transport": "OFFLINE_EXECUTABLE_MOCK_ONLY",
+  "real_oci_launches": 0,
+  "tests_run": 88,
+  "subtests_run": 97,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "static_checks": [
+    {
+      "check": "ShellCheck",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash -n grab.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash -n setup.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash -n notify.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash -n status.sh",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "check": "bash -n config.example.sh",
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "passed": true,
+  "cases": [
+    {
+      "test": "test_cli_contract.VendorContract.test_cli_file_parameters_are_literal_native_paths",
+      "result": "PASS"
+    },
+    {
+      "test": "test_cli_contract.VendorContract.test_every_read_has_a_vendor_command",
+      "result": "PASS"
+    },
+    {
+      "test": "test_cli_contract.VendorContract.test_launch_json_fields_exist_in_vendor_sdk",
+      "result": "PASS"
+    },
+    {
+      "test": "test_cli_contract.VendorContract.test_non_2xx_raw_request_can_exit_zero",
+      "result": "PASS"
+    },
+    {
+      "test": "test_cli_contract.VendorContract.test_subscription_collection_and_actual_plan_field",
+      "result": "PASS"
+    },
+    {
+      "test": "test_dependency_patch.DependencyPatch.test_only_dependency_metadata_and_record_change",
+      "result": "PASS"
+    },
+    {
+      "test": "test_dependency_patch.DependencyPatch.test_runtime_attestation_blocks_modified_dependency_before_cli",
+      "result": "PASS"
+    },
+    {
+      "test": "test_dependency_patch.DependencyPatch.test_unexpected_source_hash_stops_without_output",
+      "result": "PASS"
+    },
+    {
+      "test": "test_regression.OriginalRegression.test_current_shell_wrappers_work_with_windows_paths",
+      "result": "PASS"
+    },
+    {
+      "test": "test_regression.OriginalRegression.test_original_dry_run_calls_launch_against_mock",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_all_existing_a1_lifecycles_are_counted",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_any_read_failure_fails_closed",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_auth_config_tenancy_mismatch_stops",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_backup_limit_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_billing_corrections_or_missing_quantity_stop",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_billing_usage_pages_are_all_consumed",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_boot_and_block_volumes_share_200_gb",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_capacity_backoff_survives_restart",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_capacity_retries_identical_body_and_token_after_recheck",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_cli_hash_and_version_are_pinned",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_config_command_injection_never_executes",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_config_constraints",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_corrupt_journal_never_replaced_with_new_intent",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_default_safety_latches",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_dry_run_cannot_call_launch_boundary",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_dry_run_env_is_absolute_veto",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_dry_run_ignores_absent_approval",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_dry_run_never_writes_even_with_enabled_config",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_duplicate_after_accept_reconciles",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_duplicate_and_invalidated_token_stop",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_empty_or_ambiguous_subscription_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_empty_usage_is_not_automatic_free_confirmation",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_exactly_200_gb_with_new_boot_is_allowed",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_existing_a1_in_child_compartment_blocks_root_creation",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_existing_journal_success_tombstone_blocks_recreation",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_expired_token_is_never_rotated",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_failed_durable_intent_write_prevents_launch",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_hard_process_timeout_during_launch_keeps_unknown_intent",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_hard_process_timeout_is_unknown",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_high_performance_volumes_block",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_limit_exceeded_is_terminal",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_marketplace_custom_or_unknown_image_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_missing_a1_usage_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_missing_any_human_confirmation_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_missing_image_size_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_missing_volume_size_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_multiple_regions_require_manual_scope_review",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_no_executable_config_external_notifications_or_timer_changes",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_no_shell_true_or_eval_in_python",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_nonfinite_or_negative_usage_stops",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_paid_trial_or_unknown_account_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_pending_other_shape_blocks_unknown_boot_storage",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_private_key_cannot_be_injected_as_public_key",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_process_restart_after_accept_before_result_save",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_process_restart_after_write_ahead_before_send",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_quota_is_not_free_entitlement",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_rate_limit_is_persistent",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_rate_limit_variants_and_retry_after",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_read_pagination_must_be_complete",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_real_multiprocess_lock_allows_only_one_launch",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_replication_and_autotuning_block",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_request_change_with_existing_intent_is_blocked",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_request_has_no_paid_addons_or_public_ip",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_secret_stderr_does_not_escape",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_service_is_read_only_and_does_not_restart",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_setup_is_local_and_does_not_overwrite",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_shared_containers_and_automated_controllers_block",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_stale_or_unbound_approval_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_state_path_does_not_depend_on_checkout",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_subprocess_has_no_shell_or_unsafe_environment",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_success_persists_before_returning",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_success_restart_never_launches_again",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_success_with_list_invisibility_uses_get",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_tampered_journal_token_is_blocked",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_terminated_instances_do_not_erase_historical_billing",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_timeout_after_accept_reconciles_pending_instance",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_timeout_no_automatic_retry",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_tokens_not_in_process_args_and_temp_files_removed",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_too_large_image_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_unknown_cli_commands_rejected",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_unknown_explicit_resume_reuses_token_with_stale_list",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_unknown_or_inconsistent_quota_usage_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_unknown_resource_lifecycle_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_untagged_external_instance_after_capacity_stops",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_upgrade_pending_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_wrong_home_region_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_wrong_or_multiple_ad_blocks",
+      "result": "PASS"
+    },
+    {
+      "test": "test_safety.Safety.test_wrong_subnet_or_ad_blocks",
+      "result": "PASS"
+    }
+  ],
+  "tested_source_sha256": {
+    "a1grab.py": "3ea74c83a3b99e0ff2823265f52e841599ae57488b9d55f2b21e5eac0826330e",
+    "a1grab.service": "fbb3f90fbbaf7395b5ac9a5a4843f1355109ddeed8cfc8616bd3779e9b8db63d",
+    "config.example.sh": "bd88f2cc8f8a4f693670c605c4d3a2b80c676053b38fb15bb5bf910421a01043",
+    "grab.sh": "a866ec2310065cf7da24bc505a37ced9df3c328b7d6659580cfcde2caf5587a1",
+    "notify.sh": "4717b9c7b6ce41e05a93fb8dd505ee92dbd50b563cd395d8e695a0a07c4cfe84",
+    "schemas/review.example.json": "237137bf5394ca024a0b35dd6656c32d60c0ce11cee592801ae44094c89511aa",
+    "setup.sh": "89f69461afd46244ec88e088170c904ae47ec2721b22d1e118a7b9008acd14e6",
+    "status.sh": "9212ce279bf0b58a90d3393b37d59871c51c8885ff471af08fa32c53d051c1fc",
+    "tests/fixtures.py": "5423b7c4c6225f13178b1afb522450838d8792a441adcd0aa5481f8168dae9f7",
+    "tests/mock_oci.py": "5690a4efe2643c47232d3935d48842c6cdefe3551aec81cdaf5ad34e2182a2a4",
+    "tests/test_cli_contract.py": "94a9fa7d83746ec95a983dd9d27068920fe3f7ec986306e6e527ab625d211c13",
+    "tests/test_dependency_patch.py": "73a1bbfec82ad194d32e9693f156d52c12951bae9229b51c22846554a250367a",
+    "tests/test_regression.py": "96c85ba3113f4cef586917ba9e86ecdb02e4fc04e3e89c4c23b60864ee7fac4d",
+    "tests/test_safety.py": "da1941f0c0b98c044678777879fd07d9b4e9b65fc6579c8df4b34d0458966c1f",
+    "tests/worker.py": "ff124b8460659cc646cd7264e9aa65333efe729190fa76db108994f0309ab136",
+    "tools/check_dependencies.py": "356da0d254ce35e87b6aabd1a304cecc68bd0f3fa32d3c9573b4266292f34346",
+    "tools/patch_cli_dependency.py": "eb3f6c03d73b735040cd456b8ae77f3e77f443ccae6bdf4c2602a811cd810b37",
+    "tools/prepare_evidence.py": "98feae5f2d28d67804f0e2f8485c741dd7a1f46e15dae7198f47709d1a915325",
+    "tools/run_checks.py": "dabd07a1a2b8fd2c10cd837bd1702461cbd3bfc345f6a77acacaf32863d0393a"
+  }
+}

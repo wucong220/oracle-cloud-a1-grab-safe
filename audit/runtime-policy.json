@@ -1,0 +1,11 @@
+{
+  "cli_version": "3.95.1",
+  "certifi_version": "2026.10.19",
+  "required_file_sha256": {
+    "oci_cli-3.95.1.dist-info/METADATA": "1de12776d45415f4882320f6e67445d1885395e48536cc49e41699229da8da39",
+    "certifi-2026.10.19.dist-info/METADATA": "a5c0be3a42daeef0edfaf58e6ea5b7550f3e4e8eb35420f72e902df9bcf00f5c",
+    "certifi/__init__.py": "f8ccfc10235998c7edd340f2f305b5f3d71aed978aea82a02af30d7877bee902",
+    "certifi/cacert.pem": "50f79f98dac192b20dbf73f35c56f0b0c557ab267ff5199d1117cc1180b70785",
+    "certifi/core.py": "5c55f2727746e697f7edac9e17c377d8752e0da7ecca191531b3b80403d61dad"
+  }
+}

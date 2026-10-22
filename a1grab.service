@@ -1,38 +1,30 @@
+# USER service template. Disabled by default. Review paths before installation.
 [Unit]
-Description=Oracle Cloud A1 Free-Instance Grabber
-Documentation=https://github.com/FBX-Dev/oracle-cloud-a1-grab
+Description=Read-only OCI A1 safety inspection
 After=network-online.target
 Wants=network-online.target
-StartLimitIntervalSec=0
 
 [Service]
-Type=simple
-# 改成你自己的用户名（Oracle Linux 官方镜像默认是 opc）
-User=opc
-# %h 会被 systemd 展开成上面的 User 的 home 目录
+Type=oneshot
 WorkingDirectory=%h/a1grab
-ExecStart=%h/a1grab/grab.sh
-
-# 抢到之后 grab.sh 会自己 exit 0，重启后因 SUCCESS 标记存在会立即退出，
-# 不会重复创建实例。所以这里可以放心用 always。
-Restart=always
-RestartSec=120
-
-# ---- 资源上限 ----
-# 小机器（如 E2.1.Micro 只有 ~500MB 内存）必须限流，
-# 否则 Python 版 oci-cli 可能触发系统级 OOM。
-# 脚本本身只需约 100MB，300M 上限足够宽松。
-MemoryHigh=220M
-MemoryMax=300M
-CPUQuota=40%
-
-# ⚠️ 不要写 Nice=19 + IOSchedulingClass=idle（2026-09-24 修正）
-# 这两个值看着"礼貌"，实际会让本脚本在内存抖动时被 I/O 饿住：
-# 日志写入（log ... >> file）会被压到最低优先级，导致相邻两轮的
-# 时间戳差出 20~100 分钟，白白损失轮询时间（实测吃掉 11.5% 运行时间）。
-# 这台机器专职抢机，没有理由把自己排在最后。
-Nice=10
-IOSchedulingClass=best-effort
+ExecStart=/usr/bin/python3 -I %h/a1grab/a1grab.py run --config %h/a1grab/config.sh --dry-run
+Environment=DRY_RUN=1
+Restart=no
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/a1grab
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+LockPersonality=true
+RestrictSUIDSGID=true
+MemoryMax=384M
+CPUQuota=50%
+TimeoutStartSec=30min
+StandardOutput=journal
+StandardError=journal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

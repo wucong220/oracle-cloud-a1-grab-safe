@@ -1,0 +1,233 @@
+{
+  "target": "CPython 3.12 Windows amd64",
+  "source": "PyPI HTTPS wheel artifacts; local CLI metadata patch explicitly recorded; not installed",
+  "local_patch": {
+    "official_cli_sha256": "d71ef956f66e667e3f4815c8dfb84619f1d984f7cf34e7842d04f7b92a569508",
+    "patched_cli_sha256": "026d31775377ce99acfb8ecae29095bcfc1fc3031baa4e705042e7cd1fa2fbb7",
+    "changed_files": [
+      "oci_cli-3.95.1.dist-info/METADATA",
+      "oci_cli-3.95.1.dist-info/RECORD"
+    ],
+    "change": "Only certifi constraint changed to ==2026.10.19; RECORD regenerated; runtime source unchanged",
+    "certifi_wheel": "certifi-2026.10.19-py3-none-any.whl",
+    "certifi_sha256": "42d35340cc5b9ba78e818ddbff0c5b1c2b779de448a340fd1b989f5fa8670e1b"
+  },
+  "packages": [
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1",
+      "wheel": "aiohappyeyeballs-2.7.1-py3-none-any.whl",
+      "sha256": "9243213661e29250eb41368e5daa826fc017156c3b8a11440826b2e3ed376472"
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5",
+      "wheel": "aiohttp-3.14.5-cp312-cp312-win_amd64.whl",
+      "sha256": "2cc38a4f2b516bef1714e690df87a0e043faf1a7693c82d860091684453d5111"
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0",
+      "wheel": "aiosignal-1.4.0-py3-none-any.whl",
+      "sha256": "053243f8b92b990551949e63930a839ff0cf0b0ebbe0597b0f3fb19e1a0fe82e"
+    },
+    {
+      "name": "arrow",
+      "version": "1.4.0",
+      "wheel": "arrow-1.4.0-py3-none-any.whl",
+      "sha256": "749f0769958ebdc79c173ff0b0670d59051a535fa26e8eba02953dc19eb43205"
+    },
+    {
+      "name": "asn1crypto",
+      "version": "1.5.1",
+      "wheel": "asn1crypto-1.5.1-py2.py3-none-any.whl",
+      "sha256": "db4e40728b728508912cbb3d44f19ce188f218e9eba635821bb4b68564f8fd67"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "wheel": "attrs-26.1.0-py3-none-any.whl",
+      "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "wheel": "certifi-2026.10.19-py3-none-any.whl",
+      "sha256": "42d35340cc5b9ba78e818ddbff0c5b1c2b779de448a340fd1b989f5fa8670e1b"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "wheel": "cffi-2.1.1-cp312-cp312-win_amd64.whl",
+      "sha256": "f53e442b08449d42821fa4a4fba000095af9f62742a500f978a9f557ec44339a"
+    },
+    {
+      "name": "circuitbreaker",
+      "version": "2.1.3",
+      "wheel": "circuitbreaker-2.1.3-py3-none-any.whl",
+      "sha256": "87ba6a3ed03fdc7032bc175561c2b04d52ade9d5faf94ca2b035fbdc5e6b1dd1"
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "wheel": "click-8.4.2-py3-none-any.whl",
+      "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "wheel": "colorama-0.4.6-py2.py3-none-any.whl",
+      "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+    },
+    {
+      "name": "crc32c",
+      "version": "2.8",
+      "wheel": "crc32c-2.8-cp312-cp312-win_amd64.whl",
+      "sha256": "56b3b7d015247962cf58186e06d18c3d75a1a63d709d3233509e1c50a2d36aa2"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2",
+      "wheel": "cryptography-50.0.2-cp311-abi3-win_amd64.whl",
+      "sha256": "7afa5a6602a9f29af1f3a2965f831bae7c9d5d597b7cbb716d41ab3b7d89879c"
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0",
+      "wheel": "frozenlist-1.8.0-cp312-cp312-win_amd64.whl",
+      "sha256": "34187385b08f866104f0c0617404c8eb08165ab1272e884abc89c112e9c00746"
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "wheel": "idna-3.20-py3-none-any.whl",
+      "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+    },
+    {
+      "name": "jmespath",
+      "version": "1.0.1",
+      "wheel": "jmespath-1.0.1-py3-none-any.whl",
+      "sha256": "02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980"
+    },
+    {
+      "name": "multidict",
+      "version": "7.1.0",
+      "wheel": "multidict-7.1.0-cp312-cp312-win_amd64.whl",
+      "sha256": "10202ba98cfb3f7eb60da7ca87a2c458a69b7d0d6e4d4388cd6773ebbce89085"
+    },
+    {
+      "name": "oci",
+      "version": "2.189.0",
+      "wheel": "oci-2.189.0-py3-none-any.whl",
+      "sha256": "134e7cc634d4963ffc0c5411e9c2b2d8695d2f154fd5f8b873dd9fa8a4cb36a6"
+    },
+    {
+      "name": "oci-cli",
+      "version": "3.95.1",
+      "wheel": "oci_cli-3.95.1-py3-none-any.whl",
+      "sha256": "026d31775377ce99acfb8ecae29095bcfc1fc3031baa4e705042e7cd1fa2fbb7"
+    },
+    {
+      "name": "prompt-toolkit",
+      "version": "3.0.43",
+      "wheel": "prompt_toolkit-3.0.43-py3-none-any.whl",
+      "sha256": "a11a29cb3bf0a28a387fe5122cdb649816a957cd9261dcedf8c9f1fef33eacf6"
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.4",
+      "wheel": "propcache-0.5.4-cp312-cp312-win_amd64.whl",
+      "sha256": "98914de2c4d7f0f9f4a8c6ea4bf05841f4175796941e3ef7d47eb718f22311fb"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.11",
+      "wheel": "pycparser-3.11-py3-none-any.whl",
+      "sha256": "51d5a8ba2be0bbe440b99d2112604c95bbbc3c2748a64260186c541e1729cd80"
+    },
+    {
+      "name": "PyJWT",
+      "version": "2.15.1",
+      "wheel": "pyjwt-2.15.1-py3-none-any.whl",
+      "sha256": "42d59d631f7768a1028a64c7ff581a9bf7519804daf91fc5b6c56e30eec5e193"
+    },
+    {
+      "name": "pyOpenSSL",
+      "version": "26.4.0",
+      "wheel": "pyopenssl-26.4.0-py3-none-any.whl",
+      "sha256": "f0eb0cb2d581d3ad2b9c489468485e7f2ab6727d08401bcf9d824c3caddf3c1c"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "wheel": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
+    },
+    {
+      "name": "python-pkcs11",
+      "version": "0.9.4",
+      "wheel": "python_pkcs11-0.9.4-cp312-cp312-win_amd64.whl",
+      "sha256": "91fe4e11c7187e548293dc5c020f69665304ebdaa5724b7806251c6473d70004"
+    },
+    {
+      "name": "pytz",
+      "version": "2026.2",
+      "wheel": "pytz-2026.2-py2.py3-none-any.whl",
+      "sha256": "04156e608bee23d3792fd45c94ae47fae1036688e75032eea2e3bf0323d1f126"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.2",
+      "wheel": "PyYAML-6.0.2-cp312-cp312-win_amd64.whl",
+      "sha256": "7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8"
+    },
+    {
+      "name": "setuptools",
+      "version": "83.0.0",
+      "wheel": "setuptools-83.0.0-py3-none-any.whl",
+      "sha256": "29b23c360f22f414dc7336bb39178cc7bcbf6021ed2733cde173f09dba19abb3"
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "wheel": "six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    },
+    {
+      "name": "terminaltables",
+      "version": "3.1.10",
+      "wheel": "terminaltables-3.1.10-py2.py3-none-any.whl",
+      "sha256": "e4fdc4179c9e4aab5f674d80f09d76fa436b96fdc698a8505e0a36bf0804a874"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "wheel": "typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.5",
+      "wheel": "tzdata-2026.5-py2.py3-none-any.whl",
+      "sha256": "b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "wheel": "urllib3-2.8.0-py3-none-any.whl",
+      "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.9.3",
+      "wheel": "wcwidth-0.9.3-cp310-abi3-win_amd64.whl",
+      "sha256": "569a0cdb826d3097b6dbacfaa45aa0002d72a2ba6fa8a63251ea43ac4dd7b6a4"
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1",
+      "wheel": "yarl-1.25.1-cp312-cp312-win_amd64.whl",
+      "sha256": "7d575b54cb3863ef9bc290ea4b009999d55dc237326131e4853cf33e888fee03"
+    }
+  ]
+}
