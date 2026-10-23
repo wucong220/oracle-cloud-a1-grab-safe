@@ -381,6 +381,17 @@ class Safety(unittest.TestCase):
         self.fixture["subscriptions"]["items"][0]["upgrade-state"] = "SUBMITTED"
         self.stopped("FREE_TIER_ACCOUNT_NOT_CONFIRMED")
 
+    def test_promo_trial_state_is_accepted(self):
+        # upgrade-state PROMO means "within the 30-day Free Trial"; Always Free
+        # resources stay available, so it must be accepted (only other states fail).
+        self.fixture["subscriptions"]["items"][0]["upgrade-state"] = "PROMO"
+        self.assertEqual(self.run_engine(create=False)["state"], "DRY_RUN")
+
+    def test_time_plan_upgrade_present_blocks_even_with_promo(self):
+        self.fixture["subscriptions"]["items"][0]["upgrade-state"] = "PROMO"
+        self.fixture["subscriptions"]["items"][0]["time-plan-upgrade"] = "2026-11-01T00:00:00+00:00"
+        self.stopped("FREE_TIER_ACCOUNT_NOT_CONFIRMED")
+
     def test_empty_or_ambiguous_subscription_blocks(self):
         self.fixture["subscriptions"] = {"items": []}
         self.stopped("FREE_TIER_ACCOUNT_NOT_CONFIRMED")

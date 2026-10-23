@@ -492,7 +492,11 @@ def billing(api, cfg, now):
     collection = api.read("subscriptions", "--compartment-id", cfg["TENANCY"], "--osp-home-region", REGION, "--all")
     require(isinstance(collection, dict), "INVALID_SUBSCRIPTION_COLLECTION")
     rows = array(collection.get("items"), "INVALID_SUBSCRIPTIONS")
-    require(len(rows) == 1 and isinstance(rows[0].get("id"), str) and rows[0].get("plan-type") == "FREE_TIER" and rows[0].get("time-plan-upgrade") is None and rows[0].get("upgrade-state") is None, "FREE_TIER_ACCOUNT_NOT_CONFIRMED")
+    # plan-type must be FREE_TIER and no upgrade is scheduled (time-plan-upgrade null).
+    # upgrade-state PROMO means "within the 30-day Free Trial" — Always Free resources
+    # (A1 2 OCPU / 12 GB) remain available during the trial, so PROMO is accepted.
+    # Any other upgrade-state (e.g. a real paid-upgrade flow) still fails closed.
+    require(len(rows) == 1 and isinstance(rows[0].get("id"), str) and rows[0].get("plan-type") == "FREE_TIER" and rows[0].get("time-plan-upgrade") is None and rows[0].get("upgrade-state") in (None, "PROMO"), "FREE_TIER_ACCOUNT_NOT_CONFIRMED")
     current = dt.datetime.fromtimestamp(now, UTC)
     start = current.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     end = (start + dt.timedelta(days=32)).replace(day=1)
